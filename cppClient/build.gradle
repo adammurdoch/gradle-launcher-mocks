@@ -1,0 +1,12 @@
+plugins {
+    id("cpp-application")
+}
+
+task run {
+    dependsOn { application.developmentBinary.get().installTask.get() }
+    doLast {
+        exec {
+            commandLine = application.developmentBinary.get().installDirectory.get().asFile.absolutePath + "/cppClient"
+        }
+    }
+}
