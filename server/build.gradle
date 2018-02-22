@@ -1,0 +1,5 @@
+plugins {
+    id "application"
+}
+
+mainClassName = "net.rubygrapefruit.server.Server"

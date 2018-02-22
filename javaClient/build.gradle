@@ -1,0 +1,13 @@
+plugins {
+    id "java"
+}
+
+task run {
+    inputs.files jar
+    doLast {
+        javaexec {
+            main = "net.rubygrapefruit.java.JavaClient"
+            classpath = jar.outputs.files
+        }
+    }
+}
