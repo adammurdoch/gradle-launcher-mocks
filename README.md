@@ -1,10 +1,14 @@
-Several mock-ups of a Gradle client that use different implementation languages.
+## Gradle Launcher experiments
+
+This repo contains several mock-ups of a Gradle launcher that use different implementation languages. The goal is to investigate the performance improvements we might expect from reimplementing the Gradle launcher in a different language.
 
 - Java client packaged as a Jar with launcher script.
 - Java client packaged as a JVM image using jlink.
 - Kotlin/JVM client packaged as a Jar with launcher script.
 - Kotlin/Native client packaged as an executable.
 - C++ client package as an executable.
+
+There is also a mock up of the Gradle daemon (the "server"). This does not run any builds. It simply receives a small request message from the client and sends a small message back in response. It is implemented in Java.
 
 The mock ups only work on macOS.
 
@@ -21,6 +25,8 @@ To time the clients:
 - Kotlin/JVM: `time ./kotlinClient/build/install/kotlinClient/bin/kotlinClient`
 - Kotlin/Native: `time kotlinNativeClient/build/exe/client.kexe`
 - C++: `time cppClient/build/install/main/debug/lib/cppClient`
+
+### Benchmark results
 
 Some benchmark results (using `bench <client>`):
 
