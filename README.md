@@ -2,21 +2,23 @@
 
 This repo contains several mock-ups of a Gradle launcher. The goal is to investigate the performance improvements we might expect by reimplementing the Gradle launcher in a different language or repackaging using `jlink`.
 
+The following clients are included:
+
 - Java client packaged as a Jar with launcher script. This represents the current Gradle launcher.
-- Java client packaged as a JVM image using jlink. This is the same implementation as the previous item.
-- Kotlin/JVM client packaged as a Jar with launcher script.
-- Kotlin/Native client packaged as an executable.
-- C++ client package as an executable.
+- Java client packaged as a JVM image using `jlink`. This is built from the same Java source as the previous client.
+- Kotlin/JVM client packaged as a Jar with launcher script. This does not share any code with the Java client.
+- Kotlin/Native client packaged as an executable. This does not share any code with the previous client, due to differences in the Kotlin standard libraries for Kotlin/JVM and Kotlin/Native. A little abstraction could address this.
+- C++ client packaged as an executable.
 
 There is also a mock up of the Gradle daemon (the "server"). This does not run any builds. It simply receives messsages from the client and sends a simple response. It is implemented in Java.
 
 Each client does the same work:
 
-- Read a "daemon registry" mock up to locate the server address.
+- Read a "daemon registry" mock to locate the server address.
 - Sends a small request message to the server.
 - Recevies a small response message from the server.
 
-The mock ups only work on macOS.
+The mock-ups only work on macOS.
 
 To use:
 
