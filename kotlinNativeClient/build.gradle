@@ -20,6 +20,8 @@ task executable {
     }
 }
 
+assemble.dependsOn executable
+
 task run {
     dependsOn executable.outputFile
     doLast {
@@ -30,4 +32,6 @@ task run {
     }
 }
 
-assemble.dependsOn executable
+task runClient {
+    dependsOn run
+}

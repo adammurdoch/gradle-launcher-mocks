@@ -1,6 +1,8 @@
 plugins {
-    id "java"
+    id "application"
 }
+
+mainClassName = "net.rubygrapefruit.java.JavaClient"
 
 task jlink {
     ext.outputDir = newOutputDirectory()
@@ -17,16 +19,10 @@ task jlink {
 }
 
 assemble.dependsOn jlink
+assemble.dependsOn installDist
 
-task run {
-    inputs.files jar
-    doLast {
-        javaexec {
-            workingDir = ".."
-            main = "net.rubygrapefruit.java.JavaClient"
-            classpath = jar.outputs.files
-        }
-    }
+run {
+    workingDir = ".."
 }
 
 task runImage {
@@ -37,4 +33,9 @@ task runImage {
             commandLine = jlink.outputDir.file("bin/client").get().asFile
         }
     }
+}
+
+task runClient {
+    dependsOn run
+    dependsOn runImage
 }

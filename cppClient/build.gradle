@@ -11,3 +11,7 @@ task run {
         }
     }
 }
+
+task runClient {
+    dependsOn run
+}
