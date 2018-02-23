@@ -2,6 +2,16 @@ plugins {
     id "java"
 }
 
+task jlink {
+    inputs.files jar
+    doLast {
+        exec {
+            def javaHome = System.getProperty("java.home")
+            commandLine = ["${javaHome}/bin/jlink", "--output", "${buildDir}/client", "--module-path", "${jar.archivePath}:${javaHome}/jmods", "--add-modules", "net.rubygrapefruit.client", "--launcher", "client=net.rubygrapefruit.client/net.rubygrapefruit.java.JavaClient"]
+        }
+    }
+}
+
 task run {
     inputs.files jar
     doLast {

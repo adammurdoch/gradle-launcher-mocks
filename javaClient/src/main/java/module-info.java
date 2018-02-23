@@ -1,0 +1,2 @@
+module net.rubygrapefruit.client {
+}
