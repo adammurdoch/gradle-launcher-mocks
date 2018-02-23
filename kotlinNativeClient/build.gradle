@@ -15,7 +15,7 @@ task executable {
         def exe = "/Users/Adam/Downloads/kotlin-native-macos-0.6/bin/konanc"
         exec {
             workingDir = outputFile.get().asFile.parentFile
-            commandLine = [exe, "-o", outputFile.get()] + src.files
+            commandLine = [exe, "-o", outputFile.get(), "-opt"] + src.files
         }
     }
 }

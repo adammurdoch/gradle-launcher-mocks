@@ -3,11 +3,12 @@ plugins {
 }
 
 task run {
-    dependsOn { application.developmentBinary.get().installTask.get() }
+    def releaseBinary = application.binaries.get { it.optimized }
+    dependsOn { releaseBinary.get().installTask.get() }
     doLast {
         exec {
             workingDir = ".."
-            commandLine = application.developmentBinary.get().installDirectory.get().asFile.absolutePath + "/cppClient"
+            commandLine = releaseBinary.get().installDirectory.get().asFile.absolutePath + "/cppClient"
         }
     }
 }
