@@ -2,4 +2,5 @@
 include("server")
 include("javaClient")
 include("kotlinClient")
+include("kotlinNativeClient")
 include("cppClient")

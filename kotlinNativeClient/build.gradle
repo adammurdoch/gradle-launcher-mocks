@@ -1,0 +1,30 @@
+plugins {
+    id("lifecycle-base")
+}
+
+def src = fileTree("src/main/kotlin") {
+    include "**/*.kt"
+}
+
+task executable {
+    ext.outputFile = newOutputFile()
+    outputFile.set(layout.buildDirectory.file("exe/client.kexe"))
+    outputs.file(outputFile)
+    inputs.files(src)
+    doLast {
+        def exe = "/Users/Adam/Downloads/kotlin-native-macos-0.6/bin/konanc"
+        exec {
+            workingDir = outputFile.get().asFile.parentFile
+            commandLine = [exe, "-o", outputFile.get()] + src.files
+        }
+    }
+}
+
+task run {
+    dependsOn executable.outputFile
+    doLast {
+        exec {
+            commandLine = [tasks.executable.outputFile.get()]
+        }
+    }
+}
