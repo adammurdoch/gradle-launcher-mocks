@@ -31,7 +31,23 @@ uint16_t read_server_port() {
     return ((uint16_t) buffer[0] & 0xFF) | ((uint16_t) buffer[1] & 0xFF) << 8;
 }
 
-void connect_to_server(uint16_t port) {
+void write_request_message(int socket) {
+    string message = "C++";
+    uint8_t len = message.size();
+    write(socket, &len, 1);
+    write(socket, message.c_str(), len);
+}
+
+void read_response(int socket) {
+    uint8_t len;
+    read(socket, &len, 1);
+    char buffer[len+1];
+    read(socket, buffer, len);
+    buffer[len] = 0;
+    cout << "* Received: " << buffer << endl;
+}
+
+int connect_to_server(uint16_t port) {
     int fd = socket(PF_INET, SOCK_STREAM, 0);
     if (fd < 0) {
         throw new runtime_error("Could not open socket");
@@ -42,15 +58,17 @@ void connect_to_server(uint16_t port) {
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(port);
     if (connect(fd, (const struct sockaddr *)&server_addr, sizeof(server_addr)) != 0) {
+        close(fd);
         throw new runtime_error("Could not connect to server");
     }
+    return fd;
+}
 
-    string message = "C++";
-    uint8_t len = message.size();
-    write(fd, &len, 1);
-    write(fd, message.c_str(), len);
-
-    close(fd);
+void handle_request(uint16_t port) {
+    int socket = connect_to_server(port);
+    write_request_message(socket);
+    read_response(socket);
+    close(socket);
 }
 
 int main() {
@@ -58,8 +76,7 @@ int main() {
     try {
         uint16_t port = read_server_port();
         cout << "* Server port: " << port << endl;
-        connect_to_server(port);
-        cout << "* Done" << endl;
+        handle_request(port);
     } catch (exception* e) {
         cerr << e->what() << endl;
         return 1;

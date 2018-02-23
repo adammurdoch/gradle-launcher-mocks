@@ -2,41 +2,70 @@ import kotlinx.cinterop.*
 import platform.posix.*
 
 fun main(args: Array<String>) {
-    println("Kotlin Native client")
+    println("* Kotlin Native client")
     val port = readServerPort()
     println("* Server port: ${port}")
-    connectToServer(port)
-    println("* Done")
+    handleRequest(port)
 }
 
-private fun connectToServer(port: Int) {
+private fun handleRequest(port: Int) {
+    memScoped {
+        val socket = connectToServer(port)
+        try {
+            writeRequest(socket)
+            readResponse(socket)
+        } finally {
+            close(socket)
+        }
+    }
+}
+
+private fun connectToServer(port: Int): Int {
     memScoped {
         val fd = socket(PF_INET, SOCK_STREAM, 0)
         if (fd < 0) {
             throw Throwable("Could not open socket")
         }
-        try {
-            val serverAddr = alloc<sockaddr_in>()
-            with(serverAddr) {
-                memset(this.ptr, 0, sockaddr_in.size)
-                sin_family = AF_INET.narrow()
-                sin_port = posix_htons(port.toShort())
-            }
-            if (connect(fd, serverAddr.ptr.reinterpret(), sockaddr_in.size.toInt()) != 0) {
-                throw Throwable("could not connect to server")
-            }
-            val message = "Kotlin/Native".toUtf8()
-            val sizeBuffer = ByteArray(1)
-            sizeBuffer[0] = message.size.toByte()
-            sizeBuffer.usePinned { pinned ->
-                write(fd, pinned.addressOf(0), 1)
-            }
-            message.usePinned { pinned ->
-                write(fd, pinned.addressOf(0), message.size.signExtend())
-            }
-        } finally {
-            close(fd)
+        val serverAddr = alloc<sockaddr_in>()
+        with(serverAddr) {
+            memset(this.ptr, 0, sockaddr_in.size)
+            sin_family = AF_INET.narrow()
+            sin_port = posix_htons(port.toShort())
         }
+        if (connect(fd, serverAddr.ptr.reinterpret(), sockaddr_in.size.toInt()) != 0) {
+            throw Throwable("could not connect to server")
+        }
+        return fd
+    }
+}
+
+private fun writeRequest(socket: Int) {
+    memScoped {
+        val message = "Kotlin/Native".toUtf8()
+        val lenBuffer = ByteArray(1)
+        lenBuffer[0] = message.size.toByte()
+        lenBuffer.usePinned { pinned ->
+            write(socket, pinned.addressOf(0), 1)
+        }
+        message.usePinned { pinned ->
+            write(socket, pinned.addressOf(0), message.size.signExtend())
+        }
+    }
+}
+
+private fun readResponse(socket: Int) {
+    memScoped {
+        val lenBuffer = ByteArray(1)
+        lenBuffer.usePinned { pinned ->
+            read(socket, pinned.addressOf(0), 1)
+        }
+        val len = lenBuffer[0]
+        val buffer = ByteArray(len.toInt())
+        buffer.usePinned { pinned ->
+            read(socket, pinned.addressOf(0), len.signExtend())
+        }
+        val message = buffer.stringFromUtf8()
+        println("* Received: $message")
     }
 }
 
