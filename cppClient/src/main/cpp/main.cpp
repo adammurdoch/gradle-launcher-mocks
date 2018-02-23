@@ -44,6 +44,12 @@ void connect_to_server(uint16_t port) {
     if (connect(fd, (const struct sockaddr *)&server_addr, sizeof(server_addr)) != 0) {
         throw new runtime_error("Could not connect to server");
     }
+
+    string message = "C++";
+    uint8_t len = message.size();
+    write(fd, &len, 1);
+    write(fd, message.c_str(), len);
+
     close(fd);
 }
 

@@ -18,9 +18,21 @@ public class Server {
             while (true) {
                 try (Socket client = socket.accept()) {
                     System.out.println("received client connection");
+                    handleClient(client);
                 }
             }
         }
+    }
+
+    private static void handleClient(Socket client) throws IOException {
+        int len = client.getInputStream().read();
+        byte[] buffer = new byte[len];
+        if (client.getInputStream().read(buffer, 0, len) != len) {
+            System.out.println("-> could not read from client");
+            return;
+        }
+        String message = new String(buffer, "utf8");
+        System.out.println(String.format("received message from client: %s", message));
     }
 
     private static void writeRegistryFile(ServerSocket socket) throws IOException {

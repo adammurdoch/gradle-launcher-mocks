@@ -25,6 +25,15 @@ private fun connectToServer(port: Int) {
             if (connect(fd, serverAddr.ptr.reinterpret(), sockaddr_in.size.toInt()) != 0) {
                 throw Throwable("could not connect to server")
             }
+            val message = "Kotlin/Native".toUtf8()
+            val sizeBuffer = ByteArray(1)
+            sizeBuffer[0] = message.size.toByte()
+            sizeBuffer.usePinned { pinned ->
+                write(fd, pinned.addressOf(0), 1)
+            }
+            message.usePinned { pinned ->
+                write(fd, pinned.addressOf(0), message.size.signExtend())
+            }
         } finally {
             close(fd)
         }

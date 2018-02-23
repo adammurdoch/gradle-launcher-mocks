@@ -8,10 +8,17 @@ fun main(args: Array<String>) {
     println("Kotlin JVM client")
     val port = readServerPort()
     println("* Server port: $port")
+    writeToServer(port)
+    println("* Done")
+}
+
+private fun writeToServer(port: Int) {
     Socket().use { it ->
         it.connect(InetSocketAddress(port))
+        val message = "Kotlin/JVM".toByteArray()
+        it.getOutputStream().write(message.size)
+        it.getOutputStream().write(message)
     }
-    println("* Done")
 }
 
 private fun readServerPort(): Int {

@@ -13,10 +13,18 @@ public class JavaClient {
         System.out.println("Java client");
         int port = readServerPort();
         System.out.println(String.format("* Server port: %s", port));
+        connectToServer(port);
+        System.out.println("* Done");
+    }
+
+    private static void connectToServer(int port) throws IOException {
         try (Socket socket = new Socket()) {
             socket.connect(new InetSocketAddress(port));
+            String message = "Java client";
+            byte[] bytes = message.getBytes("utf8");
+            socket.getOutputStream().write((byte) bytes.length);
+            socket.getOutputStream().write(bytes);
         }
-        System.out.println("* Done");
     }
 
     private static int readServerPort() throws IOException {
