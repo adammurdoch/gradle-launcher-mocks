@@ -1,6 +1,9 @@
 plugins {
     id "org.jetbrains.kotlin.jvm" version "1.2.21"
+    id "application"
 }
+
+mainClassName = "net.rubygrapefruit.kotlin.KotlinClientKt"
 
 repositories {
     mavenCentral()
@@ -22,16 +25,11 @@ compileTestKotlin {
     }
 }
 
-task run {
-    inputs.files jar
-    doLast {
-        javaexec {
-            workingDir = ".."
-            main = "net.rubygrapefruit.kotlin.KotlinClientKt"
-            classpath = jar.outputs.files + configurations.runtime
-        }
-    }
+run {
+    workingDir = ".."
 }
+
+assemble.dependsOn installDist
 
 task runClient {
     dependsOn run

@@ -2,6 +2,7 @@ Several mock-ups of a Gradle client that use different implementation languages.
 
 - Java client packaged as a Jar with launcher script.
 - Java client package as a JVM image using jlink.
+- Kotlin client packaged as a Jar with launcher script.
 - Kotlin native client packaged as an executable.
 - C++ client package as an executable.
 
@@ -16,5 +17,6 @@ To time the clients:
 
 - Java + launcher: `time ./javaClient/build/install/javaClient/bin/javaClient`
 - Java + jlink: `time ./javaClient/build/client/bin/client` 
+- Kotlin + launcher: `time ./kotlinClient/build/install/kotlinClient/bin/kotlinClient`
 - Kotlin native: `time kotlinNativeClient/build/exe/client.kexe`
 - C++: `time cppClient/build/install/main/debug/lib/cppClient`
