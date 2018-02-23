@@ -28,3 +28,13 @@ task run {
         }
     }
 }
+
+task runImage {
+    dependsOn jlink
+    doLast {
+        exec {
+            workingDir = ".."
+            commandLine = jlink.outputDir.file("bin/client").get().asFile
+        }
+    }
+}
