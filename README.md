@@ -22,12 +22,12 @@ To time the clients:
 - Kotlin/Native: `time kotlinNativeClient/build/exe/client.kexe`
 - C++: `time cppClient/build/install/main/debug/lib/cppClient`
 
-Some benchmark results:
+Some benchmark results (using `bench <client>`):
 
-Client        | Execution time (mean)
+Client        | Execution time
 --------------|----------------------------
-Java          | 246.8 ms (std dev 12.06 ms)
-Java jlink    | 203.5 ms (std dev 1.664 ms) 
-Kotlin/JVM    | 185.8 ms (std dev 854.1 μs)
-Kotlin/Native | 16.92 ms (std dev 437.3 μs)
-C++           | 5.047 ms (std dev 236.9 μs)
+Java          | 247.1 ms (std dev 4.709 ms)
+Java jlink    | 212.5 ms (std dev 5.062 ms) 
+Kotlin/JVM    | 188.6 ms (std dev 1.796 ms)
+Kotlin/Native | 16.34 ms (std dev 388.1 μs)
+C++           | 4.990 ms (std dev 114.6 μs)
