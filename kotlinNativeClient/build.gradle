@@ -24,6 +24,7 @@ task run {
     dependsOn executable.outputFile
     doLast {
         exec {
+            workingDir = ".."
             commandLine = [tasks.executable.outputFile.get()]
         }
     }

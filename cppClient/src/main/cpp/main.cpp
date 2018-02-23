@@ -8,7 +8,7 @@ using namespace std;
 int main() {
     cout << "C++ client" << endl;
     try {
-        const char* file = "../server/build/server.bin";
+        const char* file = "build/server.bin";
         int fd = open(file, 0);
         if (fd < 0) {
             string message;
@@ -27,7 +27,7 @@ int main() {
         }
         close(fd);
 
-        uint16_t port = buffer[0] | buffer[1] << 8;
+        uint16_t port = ((uint16_t) buffer[0] & 0xFF) | ((uint16_t) buffer[1] & 0xFF) << 8;
         cout << "server port: " << port << endl;
     } catch (exception* e) {
         cerr << e->what() << endl;

@@ -4,7 +4,7 @@ import platform.posix.*
 fun main(args: Array<String>) {
     println("Kotlin Native client")
     memScoped {
-        val f = "../server/build/server.bin"
+        val f = "build/server.bin"
         val registryFile = open(f, 0)
         if (registryFile < 0) {
             throw Throwable("Could not open file ${f}")

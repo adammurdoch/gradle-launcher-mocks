@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 public class JavaClient {
     public static void main(String[] args) throws IOException {
         System.out.println("Java client");
-        Path registryFile = Paths.get("../server/build/server.bin");
+        Path registryFile = Paths.get("build/server.bin");
         try (InputStream registryStream = Files.newInputStream(registryFile)) {
             int b1 = registryStream.read();
             int b2 = registryStream.read();

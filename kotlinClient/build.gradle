@@ -26,6 +26,7 @@ task run {
     inputs.files jar
     doLast {
         javaexec {
+            workingDir = ".."
             main = "net.rubygrapefruit.kotlin.KotlinClientKt"
             classpath = jar.outputs.files + configurations.runtime
         }

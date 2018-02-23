@@ -22,6 +22,7 @@ task run {
     inputs.files jar
     doLast {
         javaexec {
+            workingDir = ".."
             main = "net.rubygrapefruit.java.JavaClient"
             classpath = jar.outputs.files
         }

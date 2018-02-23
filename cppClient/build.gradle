@@ -6,6 +6,7 @@ task run {
     dependsOn { application.developmentBinary.get().installTask.get() }
     doLast {
         exec {
+            workingDir = ".."
             commandLine = application.developmentBinary.get().installDirectory.get().asFile.absolutePath + "/cppClient"
         }
     }

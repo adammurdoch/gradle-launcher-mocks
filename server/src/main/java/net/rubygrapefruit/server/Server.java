@@ -15,7 +15,7 @@ public class Server {
             socket.bind(new InetSocketAddress(0));
             int port = socket.getLocalPort();
             System.out.println(String.format("listening on port: %s", port));
-            Path registryFile = Paths.get("build/server.bin");
+            Path registryFile = Paths.get("../build/server.bin");
             try (OutputStream registryStream = Files.newOutputStream(registryFile)) {
                 registryStream.write(port & 0xFF);
                 registryStream.write((port >> 8) & 0xFF);
