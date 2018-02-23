@@ -1,8 +1,8 @@
 ## Gradle Launcher experiments
 
-This repo contains several mock-ups of a Gradle launcher that use different implementation languages. The goal is to investigate the performance improvements we might expect from reimplementing the Gradle launcher in a different language.
+This repo contains several mock-ups of a Gradle launcher that use different implementation languages. The goal is to investigate the performance improvements we might expect by reimplementing or repackaging the Gradle launcher in a different language.
 
-- Java client packaged as a Jar with launcher script.
+- Java client packaged as a Jar with launcher script. This represents the current Gradle launcher.
 - Java client packaged as a JVM image using jlink.
 - Kotlin/JVM client packaged as a Jar with launcher script.
 - Kotlin/Native client packaged as an executable.
