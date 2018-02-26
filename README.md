@@ -36,7 +36,7 @@ To time the clients:
 
 ### Benchmark results
 
-Some benchmark results (using `bench <client>`):
+Some benchmark results (using `bench <client>`, Kotlin/Native 0.6, Kotlin 1.2.21, Java 9.0.4):
 
 Client        | Execution time
 --------------|----------------------------
