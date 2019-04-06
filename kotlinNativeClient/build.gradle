@@ -1,35 +1,15 @@
 plugins {
-    id("lifecycle-base")
+    id 'org.jetbrains.kotlin.konan' version '1.3.20'
 }
 
-def src = fileTree("src/main/kotlin") {
-    include "**/*.kt"
-}
-
-task executable {
-    ext.outputFile = newOutputFile()
-    outputFile.set(layout.buildDirectory.file("exe/client.kexe"))
-    outputs.file(outputFile)
-    inputs.files(src)
-    doLast {
-        def exe = "/Users/Adam/Downloads/kotlin-native-macos-0.6/bin/konanc"
-        exec {
-            workingDir = outputFile.get().asFile.parentFile
-            commandLine = [exe, "-o", outputFile.get(), "-opt"] + src.files
-        }
+konanArtifacts {
+    program("app") {
+        enableOptimizations(true)
     }
 }
 
-assemble.dependsOn executable
-
-task run {
-    dependsOn executable.outputFile
-    doLast {
-        exec {
-            workingDir = ".."
-            commandLine = [tasks.executable.outputFile.get()]
-        }
-    }
+runApp {
+    workingDir = ".."
 }
 
 task runClient {
