@@ -2,40 +2,16 @@ plugins {
     id "application"
 }
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 mainClassName = "net.rubygrapefruit.java.JavaClient"
 
-task jlink {
-    ext.outputDir = newOutputDirectory()
-    outputDir.set(layout.buildDirectory.dir("client"))
-    inputs.files jar
-    outputs.dir outputDir
-    doLast {
-        delete outputDir.get()
-        exec {
-            def javaHome = System.getProperty("java.home")
-            commandLine = ["${javaHome}/bin/jlink", "--output", "${outputDir.get()}", "--module-path", "${jar.archivePath}:${javaHome}/jmods", "--add-modules", "net.rubygrapefruit.client", "--launcher", "client=net.rubygrapefruit.client/net.rubygrapefruit.java.JavaClient"]
-        }
-    }
-}
-
-assemble.dependsOn jlink
 assemble.dependsOn installDist
 
 run {
     workingDir = ".."
 }
 
-task runImage {
-    dependsOn jlink
-    doLast {
-        exec {
-            workingDir = ".."
-            commandLine = jlink.outputDir.file("bin/client").get().asFile
-        }
-    }
-}
-
 task runClient {
     dependsOn run
-    dependsOn runImage
 }

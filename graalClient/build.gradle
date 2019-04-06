@@ -1,0 +1,40 @@
+plugins {
+    id "base"
+}
+
+configurations {
+    implementation {}
+}
+
+dependencies {
+    implementation project(':javaClient')
+}
+
+task graalImage {
+    ext.outputFile = objects.fileProperty()
+    outputFile.set(layout.buildDirectory.file("graal"))
+    inputs.files configurations.implementation
+    outputs.file outputFile
+    doLast {
+        delete outputFile.get()
+        exec {
+            commandLine = [new File(System.getProperty("user.home"), "Downloads/graalvm-ce-1.0.0-rc15/Contents/Home/bin/native-image").absolutePath, "-cp", configurations.implementation.asPath, "net.rubygrapefruit.java.JavaClient", outputFile.get().asFile.absolutePath]
+        }
+    }
+}
+
+assemble.dependsOn graalImage
+
+task runGraal {
+    dependsOn graalImage
+    doLast {
+        exec {
+            workingDir = ".."
+            commandLine = graalImage.outputFile.get().asFile
+        }
+    }
+}
+
+task runClient {
+    dependsOn runGraal
+}

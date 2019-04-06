@@ -1,0 +1,49 @@
+plugins {
+    id "java"
+}
+
+sourceCompatibility = 1.9
+targetCompatibility = 1.9
+
+dependencies {
+    implementation project(':javaClient')
+}
+
+task fatJar(type: Jar) {
+    destinationDir = layout.buildDirectory.dir("client").get().asFile
+    dependsOn jar
+    dependsOn configurations.runtimeClasspath
+    from { zipTree(jar.archivePath) }
+    from { configurations.runtimeClasspath.collect { zipTree(it) } }
+}
+
+task jlinkImage {
+    ext.outputDir = objects.directoryProperty()
+    outputDir.set(layout.buildDirectory.dir("jlink"))
+    outputs.dir outputDir
+    inputs.file fatJar.archivePath
+    dependsOn fatJar
+    doLast {
+        exec {
+            delete outputDir.get()
+            def javaHome = System.getProperty("java.home")
+            commandLine = ["${javaHome}/bin/jlink", "--output", "${outputDir.get()}", "--module-path", "${fatJar.archivePath}:${javaHome}/jmods", "--add-modules", "net.rubygrapefruit.client", "--launcher", "client=net.rubygrapefruit.client/net.rubygrapefruit.java.JavaClient"]
+        }
+    }
+}
+
+assemble.dependsOn jlinkImage
+
+task runJLink {
+    dependsOn jlinkImage
+    doLast {
+        exec {
+            workingDir = ".."
+            commandLine = jlinkImage.outputDir.file("bin/client").get().asFile
+        }
+    }
+}
+
+task runClient {
+    dependsOn runJLink
+}

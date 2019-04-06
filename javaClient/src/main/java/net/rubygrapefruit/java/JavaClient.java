@@ -46,8 +46,12 @@ public class JavaClient {
         InputStream inputStream = socket.getInputStream();
         int len = inputStream.read();
         byte[] bytes = new byte[len];
-        if (inputStream.readNBytes(bytes, 0, len) != len) {
-            throw new IOException("Could not read from server");
+        while (len > 0) {
+            int nread = inputStream.read(bytes, bytes.length - len, len);
+            if (nread < 0) {
+                throw new IOException("Could not read from server");
+            }
+            len -= nread;
         }
         String receivedMessage = new String(bytes, "utf8");
         System.out.println("* Received: " + receivedMessage);

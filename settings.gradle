@@ -1,6 +1,8 @@
 
 include("server")
 include("javaClient")
+include("jlinkClient")
+include("graalClient")
 include("kotlinClient")
 include("kotlinNativeClient")
 include("cppClient")
