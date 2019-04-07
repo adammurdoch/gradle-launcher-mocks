@@ -19,8 +19,6 @@ Each client does the same work:
 - Sends a small request message to the server.
 - Receives a small response message from the server.
 
-The mock-ups only work on macOS.
-
 To use:
 
 - Run the server using `./gradlew server:run`. This runs in the foreground.
@@ -38,13 +36,13 @@ To time the clients:
 
 ### Benchmark results
 
-Some benchmark results (using `bench <client>`, Kotlin/Native 1.3.20, Kotlin 1.3.20, Java 9.0.4, GraalVM 1.0-RC15):
+Some benchmark results (using `bench <client>`, Kotlin/Native 1.3.20, Kotlin 1.3.20, Java 9.0.4, GraalVM 1.0-RC15, macOS 10.14.4):
 
 Client        | Execution time
 --------------|----------------------------
 Java          | 198.2 ms (std dev 3.767 ms)
-Java jlink    | 139.7 ms (std dev 7.121 ms) 
 Kotlin/JVM    | 158.5 ms (std dev 3.295 ms)
+Java jlink    | 139.7 ms (std dev 7.121 ms) 
 Kotlin/Native | 13.21 ms (std dev 585.8 μs)
 Java GraalVm  | 8.595 ms (std dev 550.6 μs) 
 C++           | 4.372 ms (std dev 396.0 μs)
