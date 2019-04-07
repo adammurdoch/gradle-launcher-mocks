@@ -4,12 +4,12 @@ This repo contains several mock-ups of a Gradle launcher. The goal is to investi
 
 The following clients are included:
 
-- Java client packaged as a Jar with launcher script. This represents the current Gradle launcher.
+- Java client packaged as a Jar with launcher script. This approximates the current Gradle launcher.
 - Java client packaged as a JVM image using `jlink`. This is built from the same Java source as the previous client.
 - Java client packages as a native executable using GraalVM `native-image`. This is built from the same Java source as the previous client.
 - Kotlin/JVM client packaged as a Jar with launcher script. This does not share any code with the Java client.
-- Kotlin/Native client packaged as an executable. This does not share any code with the previous client, due to differences in the Kotlin standard libraries for Kotlin/JVM and Kotlin/Native. A little abstraction could address this.
-- C++ client packaged as an executable.
+- Kotlin/Native client packaged as an executable. This does not share any code with the previous client, due to differences in the Kotlin standard libraries for Kotlin/JVM and Kotlin/Native. A little abstraction could address this, so that most of the code can be shared between a native executable and a JVM based fallback.
+- C++ client packaged as an executable. This is included just to see what is possible, not as a serious option for reimplementing the Gradle launcher.
 
 There is also a mock up of the Gradle daemon (the "server"). This does not run any builds. It simply receives messages from the client and sends a simple response. It is implemented in Java.
 
