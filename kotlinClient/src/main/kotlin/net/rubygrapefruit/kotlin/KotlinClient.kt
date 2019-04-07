@@ -30,7 +30,7 @@ private fun handleRequest(port: Int) {
 }
 
 private fun writeRequest(socket: Socket) {
-    val message = "Kotlin/JVM".toByteArray()
+    val message = "Kotlin/JVM     ".toByteArray()
     val outputStream = socket.getOutputStream()
     outputStream.write(message.size)
     outputStream.write(message)

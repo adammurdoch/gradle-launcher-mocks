@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,8 +36,8 @@ public class JavaClient {
     }
 
     private static void writeRequest(Socket socket) throws IOException {
-        String message = "Java client";
-        byte[] bytes = message.getBytes("utf8");
+        String message = "Java           ";
+        byte[] bytes = message.getBytes(StandardCharsets.UTF_8);
         OutputStream outputStream = socket.getOutputStream();
         outputStream.write((byte) bytes.length);
         outputStream.write(bytes);
@@ -53,7 +54,7 @@ public class JavaClient {
             }
             len -= nread;
         }
-        String receivedMessage = new String(bytes, "utf8");
+        String receivedMessage = new String(bytes, StandardCharsets.UTF_8);
         System.out.println("* Received: " + receivedMessage);
     }
 }

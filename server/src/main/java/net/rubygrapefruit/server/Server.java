@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,7 +18,7 @@ public class Server {
     private final Map<String, AtomicInteger> counters = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
-        System.out.println("test server");
+        System.out.println("* test server");
         new Server().run();
     }
 
@@ -42,13 +43,13 @@ public class Server {
             System.out.println("-> could not read from client");
             return;
         }
-        String receivedMessage = new String(buffer, "utf8");
+        String receivedMessage = new String(buffer, StandardCharsets.UTF_8);
         System.out.println(String.format("received message from client: %s", receivedMessage));
 
         counters.computeIfAbsent(receivedMessage, (msg) -> new AtomicInteger());
         int count = counters.get(receivedMessage).incrementAndGet();
 
-        buffer = ("Hello " + receivedMessage + ", greeted " + count + " times").getBytes("utf8");
+        buffer = ("Hello [" + receivedMessage + "], greeted " + count + " times").getBytes(StandardCharsets.UTF_8);
         OutputStream outputStream = client.getOutputStream();
         outputStream.write(buffer.length);
         outputStream.write(buffer);

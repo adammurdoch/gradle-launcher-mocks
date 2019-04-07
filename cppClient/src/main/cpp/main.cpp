@@ -32,7 +32,7 @@ uint16_t read_server_port() {
 }
 
 void write_request_message(int socket) {
-    string message = "C++";
+    string message = "C++            ";
     uint8_t len = message.size();
     write(socket, &len, 1);
     write(socket, message.c_str(), len);
@@ -72,7 +72,7 @@ void handle_request(uint16_t port) {
 }
 
 int main() {
-    cout << "C++ client" << endl;
+    cout << "* C++ client" << endl;
     try {
         uint16_t port = read_server_port();
         cout << "* Server port: " << port << endl;

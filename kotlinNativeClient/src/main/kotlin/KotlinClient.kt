@@ -41,7 +41,7 @@ private fun connectToServer(port: Int): Int {
 
 private fun writeRequest(socket: Int) {
     memScoped {
-        val message = "Kotlin/Native".toUtf8()
+        val message = "Kotlin/Native  ".toUtf8()
         val lenBuffer = ByteArray(1)
         lenBuffer[0] = message.size.toByte()
         lenBuffer.usePinned { pinned ->
