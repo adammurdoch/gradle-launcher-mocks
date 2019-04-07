@@ -1,6 +1,6 @@
 ## Gradle Launcher experiments
 
-This repo contains several mock-ups of a Gradle launcher. The goal is to investigate the performance improvements we might expect by reimplementing the Gradle launcher in a different language or repackaging using `jlink`.
+This repo contains several mock-ups of a Gradle launcher. The goal is to investigate the performance improvements we might expect by reimplementing the Gradle launcher in a different language or repackaging as a native executable.
 
 The following clients are included:
 
