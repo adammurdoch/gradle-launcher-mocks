@@ -1,7 +1,7 @@
 import kotlinx.cinterop.*
 import platform.posix.*
 
-fun main(args: Array<String>) {
+fun main() {
     println("* Kotlin Native client")
     val port = readServerPort()
     println("* Server port: ${port}")
@@ -28,11 +28,11 @@ private fun connectToServer(port: Int): Int {
         }
         val serverAddr = alloc<sockaddr_in>()
         with(serverAddr) {
-            memset(this.ptr, 0, sockaddr_in.size.toULong())
-            sin_family = AF_INET.toUByte()
-            sin_port = posix_htons(port.toShort()).toUShort()
+            memset(this.ptr, 0, sizeOf<sockaddr_in>().convert())
+            sin_family = AF_INET.convert()
+            sin_port = posix_htons(port.convert()).convert()
         }
-        if (connect(fd, serverAddr.ptr.reinterpret(), sockaddr_in.size.toUInt()) != 0) {
+        if (connect(fd, serverAddr.ptr.reinterpret(), sizeOf<sockaddr_in>().convert()) != 0) {
             throw Throwable("could not connect to server")
         }
         return fd
@@ -41,30 +41,22 @@ private fun connectToServer(port: Int): Int {
 
 private fun writeRequest(socket: Int) {
     memScoped {
-        val message = "Kotlin/Native  ".toUtf8()
+        val message = "Kotlin/Native  "
         val lenBuffer = ByteArray(1)
-        lenBuffer[0] = message.size.toByte()
-        lenBuffer.usePinned { pinned ->
-            write(socket, pinned.addressOf(0), 1)
-        }
-        message.usePinned { pinned ->
-            write(socket, pinned.addressOf(0), message.size.toULong())
-        }
+        lenBuffer[0] = message.length.toByte()
+        write(socket, lenBuffer.refTo(0), 1)
+        write(socket, message.cstr, message.length.convert())
     }
 }
 
 private fun readResponse(socket: Int) {
     memScoped {
         val lenBuffer = ByteArray(1)
-        lenBuffer.usePinned { pinned ->
-            read(socket, pinned.addressOf(0), 1)
-        }
+        read(socket, lenBuffer.refTo(0), 1)
         val len = lenBuffer[0]
         val buffer = ByteArray(len.toInt())
-        buffer.usePinned { pinned ->
-            read(socket, pinned.addressOf(0), len.toULong())
-        }
-        val message = buffer.stringFromUtf8()
+        read(socket, buffer.refTo(0), len.convert())
+        val message = buffer.toKString()
         println("* Received: $message")
     }
 }
@@ -78,15 +70,13 @@ private fun readServerPort(): Int {
         }
         try {
             val buffer = ByteArray(2)
-            buffer.usePinned { pinned ->
-                val nread = read(registryFile, pinned.addressOf(0), buffer.size.toULong())
-                if (nread.narrow<Int>() != 2) {
-                    throw Throwable("Could not read server port from ${f}")
-                }
-                val b1 = buffer[0].toInt()
-                val b2 = buffer[1].toInt()
-                return b1 and 0xFF or (b2 and 0xFF shl 8)
+            val nread = read(registryFile, buffer.refTo(0), buffer.size.convert())
+            if (nread.convert<Int>() != 2) {
+                throw Throwable("Could not read server port from ${f}")
             }
+            val b1 = buffer[0].toInt()
+            val b2 = buffer[1].toInt()
+            return b1 and 0xFF or (b2 and 0xFF shl 8)
         } finally {
             close(registryFile)
         }

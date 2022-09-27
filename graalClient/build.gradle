@@ -18,7 +18,7 @@ task graalImage {
     doLast {
         delete outputFile.get()
         exec {
-            commandLine = [new File(System.getProperty("user.home"), "Downloads/graalvm-ce-1.0.0-rc15/Contents/Home/bin/native-image").absolutePath, "-cp", configurations.implementation.asPath, "net.rubygrapefruit.java.JavaClient", outputFile.get().asFile.absolutePath]
+            commandLine = [new File(System.getProperty("user.home"), "bin/downloads/graalvm-amd64-22.2/graalvm-ce-java11-22.2.0/Contents/Home/bin/native-image").absolutePath, "-cp", configurations.implementation.asPath, "net.rubygrapefruit.java.JavaClient", outputFile.get().asFile.absolutePath]
         }
     }
 }
