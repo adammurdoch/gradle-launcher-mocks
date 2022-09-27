@@ -9,6 +9,12 @@ kotlin {
             }
         }
     }
+    macosX64 {
+        binaries {
+            executable {
+            }
+        }
+    }
 }
 
 repositories {
