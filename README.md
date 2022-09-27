@@ -43,7 +43,7 @@ To time the clients:
 
 ### Benchmark results
 
-Some benchmark results (using `hyperfine --warmup 10 -N <client>, Kotlin 1.7.10, Java 17 (Intel) and Java 18 (M1),
+Some benchmark results (using `hyperfine --warmup 10 -N <client>`, Kotlin 1.7.10, Java 17 (Intel) and Java 18 (M1),
 GraalVM 22.2.0 (Intel), macOS 12.6 on a M1 machine)
 
 | Client                        | Execution time      | Installation size |
