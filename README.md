@@ -66,6 +66,7 @@ GraalVM 22.2.0 (Intel), macOS 12.6 on a M1 machine)
 | Kotlin/Native (Intel)          | 4.8 ms ±   0.4 ms   | 474K              |
 | Kotlin/Native (M1)             | 1.7 ms ±   0.2 ms   | 473K              |
 | C++ (Intel)                    | 6.8 ms ±   0.5 ms   | 53K               |
+| C++ (M1)                       | 3.7 ms ±   0.4 ms   | 52K               |
 
 #### Older results
 
