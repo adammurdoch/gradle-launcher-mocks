@@ -13,13 +13,22 @@ import java.nio.file.Paths;
 public class JavaClient {
     public static void main(String[] args) throws IOException {
         System.out.println("* Java client");
-        int port = readServerPort();
+        String registryRootPath = maybeGetRegistryRoot(args);
+        int port = readServerPort(registryRootPath);
         System.out.println(String.format("* Server port: %s", port));
         handleRequest(port);
     }
 
-    private static int readServerPort() throws IOException {
-        Path registryFile = Paths.get("build/server.bin");
+    private static String maybeGetRegistryRoot(String[] args) {
+        final String registryRoot = "registryRoot";
+        if (args.length == 1 && args[0].startsWith(registryRoot)) {
+            return args[0].split("=")[1];
+        }
+        return "";
+    }
+
+    private static int readServerPort(String registryRootPath) throws IOException {
+        Path registryFile = Paths.get(registryRootPath, "build/server.bin");
         try (InputStream registryStream = Files.newInputStream(registryFile)) {
             int b1 = registryStream.read();
             int b2 = registryStream.read();
