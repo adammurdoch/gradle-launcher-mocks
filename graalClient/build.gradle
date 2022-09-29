@@ -1,40 +1,28 @@
+import org.graalvm.buildtools.gradle.tasks.NativeRunTask
+
 plugins {
-    id "base"
+    id 'application'
+    id 'org.graalvm.buildtools.native' version '0.9.14'
 }
 
-configurations {
-    implementation {}
+application {
+    mainClass = 'net.rubygrapefruit.java.JavaClient'
 }
 
 dependencies {
-    implementation project(':javaClient')
+    nativeImageClasspath project(':javaClient')
 }
 
-task graalImage {
-    ext.outputFile = objects.fileProperty()
-    outputFile.set(layout.buildDirectory.file("graal"))
-    inputs.files configurations.implementation
-    outputs.file outputFile
-    doLast {
-        delete outputFile.get()
-        exec {
-            commandLine = [new File(System.getProperty("user.home"), "bin/downloads/graalvm-amd64-22.2/graalvm-ce-java11-22.2.0/Contents/Home/bin/native-image").absolutePath, "-cp", configurations.implementation.asPath, "net.rubygrapefruit.java.JavaClient", outputFile.get().asFile.absolutePath]
-        }
-    }
+nativeBuild {
+    runtimeArgs "registryRoot=${rootProject.projectDir.absolutePath}"
 }
 
-assemble.dependsOn graalImage
-
-task runGraal {
-    dependsOn graalImage
-    doLast {
-        exec {
-            workingDir = ".."
-            commandLine = graalImage.outputFile.get().asFile
-        }
+tasks.named('nativeRun', NativeRunTask) {
+    doFirst {
+        logger.lifecycle "runtimeArgs: {}", runtimeArgs.get()
     }
 }
 
 task runClient {
-    dependsOn runGraal
+    dependsOn nativeRun
 }
