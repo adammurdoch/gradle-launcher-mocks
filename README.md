@@ -29,7 +29,8 @@ Each client does the same work:
 
  - GraalVM
    1. Use SDKMAN to install GraalVM: `$ sdk install java 22.2.r11-grl`
-   2. Point `GRAALVM_HOME` env var to the installation: `$ export GRAALVM_HOME=$SDKMAN_CANDIDATES_DIR/java/22.2.r11-grl`. This step should not be necessary since the `org.graalvm.buildtools.native` plugin [claims](https://graalvm.github.io/native-build-tools/0.9.4/gradle-plugin.html#_installing_graalvm_native_image_tool) it uses toolchains to discover the installation.
+   2. Install native image component: `$ $SDKMAN_CANDIDATES_DIR/java/22.2.r11-grl/bin/gu install native-image`
+   3. ~Point `GRAALVM_HOME` env var to the installation: `$ export GRAALVM_HOME=$SDKMAN_CANDIDATES_DIR/java/22.2.r11-grl`. This step should not be necessary since the `org.graalvm.buildtools.native` plugin [claims](https://graalvm.github.io/native-build-tools/0.9.4/gradle-plugin.html#_installing_graalvm_native_image_tool) it uses toolchains to discover the installation.~
 
 To use:
 
