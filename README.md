@@ -52,18 +52,19 @@ To time the clients:
 Some benchmark results (using `hyperfine --warmup 10 -N <client>`, Kotlin 1.7.10, Java 17 (Intel) and Java 18 (M1),
 GraalVM 22.2.0 (Intel), macOS 12.6 on a M1 machine)
 
-| Client                        | Execution time      | Installation size |
-|-------------------------------|---------------------|-------------------|
-| Java (17 - Intel)             | 108.4 ms ± 2.6 ms   | 16K               |
-| Java (18 - M1)                | 50.6 ms ±   1.0 ms  | -                 |
-| Kotlin/JVM (17 - Intel)       | 112.8 ms ±   4.5 ms | 1.7M              |
-| Kotlin/JVM (18 - M1)          | 52.0 ms ±   1.1 ms  | -                 |
-| Java jlink (17 - Intel)       | 136.9 ms ±   1.7 ms | 43M               |
-| Java GraalVM (22.2.0 - Intel) | 89.1 ms ±   1.0 ms  | 11M               |
-| Java GraalVM (22.2.r11 - M1)  | 5.1 ms ±   0.7 ms   | 12M               |
-| Kotlin/Native (Intel)         | 4.8 ms ±   0.4 ms   | 474K              |
-| Kotlin/Native (M1)            | 1.7 ms ±   0.2 ms   | 473K              |
-| C++ (Intel)                   | 6.8 ms ±   0.5 ms   | 53K               |
+| Client                         | Execution time      | Installation size |
+|--------------------------------|---------------------|-------------------|
+| Java (17 - Intel)              | 108.4 ms ± 2.6 ms   | 16K               |
+| Java (18 - M1)                 | 50.6 ms ±   1.0 ms  | -                 |
+| Kotlin/JVM (17 - Intel)        | 112.8 ms ±   4.5 ms | 1.7M              |
+| Kotlin/JVM (18 - M1)           | 52.0 ms ±   1.1 ms  | -                 |
+| Java jlink (17 - Intel)        | 136.9 ms ±   1.7 ms | 43M               |
+| Java GraalVM (22.2.0 - Intel)  | 89.1 ms ±   1.0 ms  | 11M               |
+| Java GraalVM (22.2.r11 - Intel)| 6.3 ms ±   0.5 ms   | 11.9M             |
+| Java GraalVM (22.2.r11 - M1)   | 5.1 ms ±   0.7 ms   | 12M               |
+| Kotlin/Native (Intel)          | 4.8 ms ±   0.4 ms   | 474K              |
+| Kotlin/Native (M1)             | 1.7 ms ±   0.2 ms   | 473K              |
+| C++ (Intel)                    | 6.8 ms ±   0.5 ms   | 53K               |
 
 #### Older results
 
