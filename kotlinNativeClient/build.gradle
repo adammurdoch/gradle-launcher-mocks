@@ -17,10 +17,6 @@ kotlin {
     }
 }
 
-repositories {
-    mavenCentral()
-}
-
 runReleaseExecutableMacosArm64 {
     workingDir = ".."
 }

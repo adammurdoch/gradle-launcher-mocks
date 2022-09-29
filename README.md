@@ -25,6 +25,13 @@ Each client does the same work:
 - Sends a small request message to the server.
 - Receives a small response message from the server.
 
+### Prerequisites
+
+ - GraalVM
+   1. Use SDKMAN to install GraalVM: `$ sdk install java 22.2.r11-grl`
+   2. Install native image component: `$ $SDKMAN_CANDIDATES_DIR/java/22.2.r11-grl/bin/gu install native-image`
+   3. ~Point `GRAALVM_HOME` env var to the installation: `$ export GRAALVM_HOME=$SDKMAN_CANDIDATES_DIR/java/22.2.r11-grl`. This step should not be necessary since the `org.graalvm.buildtools.native` plugin [claims](https://graalvm.github.io/native-build-tools/0.9.4/gradle-plugin.html#_installing_graalvm_native_image_tool) it uses toolchains to discover the installation.~
+
 To use:
 
 - Run the server using `./gradlew server:run`. This runs in the foreground.
@@ -35,7 +42,7 @@ To time the clients:
 
 - Java: `time ./javaClient/build/install/javaClient/bin/javaClient`
 - Java + jlink: `time ./jlinkClient/build/jlink/bin/client`
-- Java + GraalVM: `time ./graalClient/build/graal`
+- Java + GraalVM: `time ./graalClient/build/native/nativeCompile/graalClient`
 - Kotlin/JVM: `time ./kotlinClient/build/install/kotlinClient/bin/kotlinClient`
 - Kotlin/Native (M1): `time ./kotlinNativeClient/build/bin/macosArm64/releaseExecutable/kotlinNativeClient.kexe`
 - Kotlin/Native (intel): `time ./kotlinNativeClient/build/bin/macosX64/releaseExecutable/kotlinNativeClient.kexe`
@@ -46,17 +53,19 @@ To time the clients:
 Some benchmark results (using `hyperfine --warmup 10 -N <client>`, Kotlin 1.7.10, Java 17 (Intel) and Java 18 (M1),
 GraalVM 22.2.0 (Intel), macOS 12.6 on a M1 machine)
 
-| Client                        | Execution time      | Installation size |
-|-------------------------------|---------------------|-------------------|
-| Java (17 - Intel)             | 108.4 ms ± 2.6 ms   | 16K               |
-| Java (18 - M1)                | 50.6 ms ±   1.0 ms  | -                 |
-| Kotlin/JVM (17 - Intel)       | 112.8 ms ±   4.5 ms | 1.7M              |
-| Kotlin/JVM (18 - M1)          | 52.0 ms ±   1.1 ms  | -                 |
-| Java jlink (17 - Intel)       | 136.9 ms ±   1.7 ms | 43M               |
-| Java GraalVM (22.2.0 - Intel) | 89.1 ms ±   1.0 ms  | 11M               |
-| Kotlin/Native (Intel)         | 4.8 ms ±   0.4 ms   | 474K              |
-| Kotlin/Native (M1)            | 1.7 ms ±   0.2 ms   | 473K              |
-| C++ (Intel)                   | 6.8 ms ±   0.5 ms   | 53K               |
+| Client                         | Execution time      | Installation size |
+|--------------------------------|---------------------|-------------------|
+| Java (17 - Intel)              | 108.4 ms ± 2.6 ms   | 16K               |
+| Java (18 - M1)                 | 50.6 ms ±   1.0 ms  | -                 |
+| Kotlin/JVM (17 - Intel)        | 112.8 ms ±   4.5 ms | 1.7M              |
+| Kotlin/JVM (18 - M1)           | 52.0 ms ±   1.1 ms  | -                 |
+| Java jlink (17 - Intel)        | 136.9 ms ±   1.7 ms | 43M               |
+| Java GraalVM (22.2.0 - Intel)  | 89.1 ms ±   1.0 ms  | 11M               |
+| Java GraalVM (22.2.r11 - Intel)| 6.3 ms ±   0.5 ms   | 11.9M             |
+| Java GraalVM (22.2.r11 - M1)   | 5.1 ms ±   0.7 ms   | 12M               |
+| Kotlin/Native (Intel)          | 4.8 ms ±   0.4 ms   | 474K              |
+| Kotlin/Native (M1)             | 1.7 ms ±   0.2 ms   | 473K              |
+| C++ (Intel)                    | 6.8 ms ±   0.5 ms   | 53K               |
 
 #### Older results
 
